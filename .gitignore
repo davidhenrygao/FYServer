@@ -36,3 +36,6 @@ core.*
 
 # log file
 log/*
+
+# back file
+*.bak
