@@ -1,6 +1,6 @@
 root = "$ROOT/"
-thread = 8
-logpath = root .. "run"
+thread = 3
+logpath = root .. "log"
 harbor = 0
 start = "main"	-- main script
 luaservice = root .. "service/?.lua;" .. root .."skynet/service/?.lua"
@@ -10,6 +10,6 @@ lua_cpath = root .. "skynet/luaclib/?.so"
 cpath = root .. "/cservice/?.so;"..root.."/skynet/cservice/?.so"
 
 if $DAEMON then
-	logger = root .. "run/skynet.log"
-	daemon = root .. "run/skynet.pid"
+	logger = root .. "log/skynet.log"
+	daemon = root .. "log/skynet.pid"
 end
