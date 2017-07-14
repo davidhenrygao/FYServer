@@ -8,6 +8,7 @@ skynet.start(function()
 	end
 	skynet.newservice("debug_console",8000)
 	--skynet.newservice("simpledb")
+	skynet.uniqueservice("login")
 	local gate = skynet.newservice("gate")
 	skynet.call(gate, "lua", "start", {})
 	skynet.exit()

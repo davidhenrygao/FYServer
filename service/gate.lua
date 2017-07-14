@@ -7,6 +7,10 @@ local data = {}
 
 local function accept_cb(fd, ip)
     log("gate accept connection[%d] from ip[%s]", fd, ip)
+    local conn = skynet.newservice("connection")
+    skynet.call(conn, "lua", "start", {
+	fd = fd,
+    })
 end
 
 function CMD.start(conf)
