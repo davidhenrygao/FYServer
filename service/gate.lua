@@ -2,15 +2,28 @@ local skynet = require "skynet"
 local socket = require "skynet.socket"
 local log = require "log"
 
+-- constant
+local TIMER_INTERVAL = 500
+
 local CMD = {}
 local data = {}
+local conns = {}
 
 local function accept_cb(fd, ip)
     log("gate accept connection[%d] from ip[%s]", fd, ip)
     local conn = skynet.newservice("connection")
     skynet.call(conn, "lua", "start", {
 	fd = fd,
+	dest = data.login,
     })
+    conns[conn] = fd
+end
+
+local function timer_func()
+    skynet.timeout(TIMER_INTERVAL, timer_func)
+    for conn,_ in pairs(conns) do
+        skynet.send(conn, "lua", "selfcheck")
+    end
 end
 
 function CMD.start(conf)
@@ -22,8 +35,18 @@ function CMD.start(conf)
     data.ip = ip
     data.port = port
     socket.start(data.fd, accept_cb)
+    skynet.timeout(TIMER_INTERVAL, timer_func)
     log("gate start: listen ip[%s]:port[%d]", ip, port)
 end
+
+function CMD.close_conn(conn_info)
+    assert(conn_info and conn_info.conn)
+    conns[conn_info.conn] = nil
+end
+
+skynet.init( function ()
+    data.login = skynet.queryservice("login")
+end)
 
 skynet.start( function ()
     skynet.dispatch("lua", function (_, _, cmd, ...)
