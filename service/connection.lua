@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local socket = require "skynet.socket"
 local log = require "log"
+local netpackage = "netpackage"
 
 -- constant
 local STATE = {
@@ -17,6 +18,19 @@ local CMD = {}
 local data = {}
 
 local function main_loop()
+    local ok
+    local msg
+    while true do
+        ok, msg = netpackage.read(data.fd)
+	if not ok then
+	    log("netpackage read failed: connection[%d] aborted.", data.fd)
+	    socket.close(data.fd)
+	    break
+	end
+	data.time = skynet.time()
+	skynet.send(data.dest, "lua", "dispatch", skynet.self(), msg)
+    end
+    skynet.exit()
 end
 
 local function init_state_selfcheck()
@@ -27,7 +41,6 @@ local function init_state_selfcheck()
 	    conn = skynet.self(),
 	})
 	socket.close(data.fd)
-	skynet.exit()
     end
 end
 

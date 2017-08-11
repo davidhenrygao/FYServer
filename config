@@ -14,5 +14,5 @@ if $DAEMON then
 	daemon = root .. "log/skynet.pid"
 end
 
-ip = "192.168.2.197"
+ip = "192.168.2.199"
 port = 10086
