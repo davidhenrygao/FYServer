@@ -20,6 +20,7 @@ local data = {}
 local function main_loop()
     local ok
     local msg
+    local session = 0
     while true do
         ok, msg = netpackage.read(data.fd)
 	if not ok then
@@ -28,7 +29,8 @@ local function main_loop()
 	    break
 	end
 	data.time = skynet.time()
-	skynet.send(data.dest, "lua", "dispatch", skynet.self(), msg)
+	session = session + 1
+	skynet.send(data.dest, "lua", "dispatch", skynet.self(), session, msg)
     end
     skynet.exit()
 end
@@ -67,6 +69,13 @@ function CMD.selfcheck()
     if data.state == STATE.LOGIN then
         login_state_selfcheck()
     end
+end
+
+function CMD.resopnse(sess, resp)
+    assert(type(resp) == "string", 
+        "CMD.resopnse got resp is not json string!")
+    log("session[%d] response json string[%s].", sess, resp)
+    netpackage.write(data.fd, resp)
 end
 
 skynet.start( function ()
