@@ -3,12 +3,8 @@ local log = require "log"
 local lfs = require "lfs"
 local path_mgr = require "logic.utils.path_mgr"
 
-local slash = "/"
-local point = "."
 local logic = "logic"
-local root = skynet.getenv("root") .. logic .. slash
-
-local handlers = 1
+local root = skynet.getenv("root") .. logic .. "/"
 
 local function load_handlers(paths)
     local path
@@ -26,7 +22,7 @@ local function load_handlers(paths)
 		break
 	    end
 	    if attrs.mode == "file" and path_mgr.suffix(p) == "lua" then
-	        file = logic .. point .. path_mgr.prefix(p)
+	        file = path_mgr.trans2luapath(logic .. "/" .. path_mgr.prefix(p))
 		cmd, handler = require(file)
 		handlers[cmd] = handler
 	    end
@@ -40,9 +36,11 @@ local function load_handlers(paths)
 				new_path, err)
 			    break
 			end
-			if attrs.mode == "file" and path_mgr.suffix(f) == "lua" then
-			    file = logic .. point .. p .. point .. path_mgr.prefix(f)
-			    local cmd, handler = require(loadfile)
+			if attrs.mode == "file" and path_mgr.prefix(f) ~= "init" 
+			    and path_mgr.suffix(f) == "lua" then
+			    file = path_mgr.trans2luapath(
+				logic .. "/" .. p .. "/" .. path_mgr.prefix(f))
+			    cmd, handler = require(file)
 			    handlers[cmd] = handler
 			end
 		    until true
