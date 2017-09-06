@@ -4,7 +4,10 @@
 
 local CMD = {
 -- 0-99 common use
+    HEARTBEAT = 1,
+    ECHO = 2,
 -- 100-199 login server use
+    LOGIN = 100,
 }
 
 return CMD

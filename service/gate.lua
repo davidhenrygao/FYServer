@@ -46,6 +46,7 @@ end
 
 skynet.init( function ()
     data.login = skynet.queryservice("login")
+    skynet.queryservice("db")
 end)
 
 skynet.start( function ()

@@ -78,11 +78,20 @@ function CMD.resopnse(sess, resp)
     netpackage.write(data.fd, resp)
 end
 
+function CMD.change_dest(dest)
+    log("change_dest from [%d] to [%d].", data.dest, dest)
+    data.dest = dest
+end
+
 skynet.start( function ()
     skynet.dispatch("lua", function (session, _, cmd, ...)
         local func = CMD[cmd]
 	if func then
-	    skynet.ret(skynet.pack(func(...)))
+	    if session == 0 then
+	        func(...)
+	    else
+		skynet.ret(skynet.pack(func(...)))
+	    end
 	else
 	    log("Unknown connection Command : [%s]", cmd)
 	    skynet.response()(false)
