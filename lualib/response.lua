@@ -11,7 +11,7 @@ local function response(source, session)
 	local r, errmsg = proto.serialize(code, resp)
 	if not r then
 	    log("protocol serialization error: %s", errmsg)
-	    r = proto.serialization(retcode.INTERNAL)
+	    r = proto.serialize(retcode.INTERNAL)
 	    assert(r, "fatal error in protocol serialization!")
 	end
 	skynet.send(source, "lua", "response", session, r)

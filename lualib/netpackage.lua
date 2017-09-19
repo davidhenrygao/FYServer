@@ -28,7 +28,7 @@ end
 
 function netpackage.write(fd, msg)
     local len = string.len(msg)
-    local sendmsg = string.pack(">H", len) + msg
+    local sendmsg = string.pack(">H", len) .. msg
     return socket.write(fd, sendmsg)
 end
 

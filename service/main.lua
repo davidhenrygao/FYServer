@@ -1,4 +1,5 @@
 local skynet = require "skynet"
+require "skynet.manager"
 
 skynet.start(function()
 	skynet.error("FYServer start")

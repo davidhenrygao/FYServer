@@ -1,7 +1,7 @@
 local skynet = require "skynet"
 local socket = require "skynet.socket"
 local log = require "log"
-local netpackage = "netpackage"
+local netpackage = require "netpackage"
 
 -- constant
 local STATE = {
@@ -71,9 +71,9 @@ function CMD.selfcheck()
     end
 end
 
-function CMD.resopnse(sess, resp)
+function CMD.response(sess, resp)
     assert(type(resp) == "string", 
-        "CMD.resopnse got resp is not json string!")
+        "CMD.response got resp is not json string!")
     log("session[%d] response json string[%s].", sess, resp)
     netpackage.write(data.fd, resp)
 end

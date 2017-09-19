@@ -1,9 +1,9 @@
-local skynet = "skynet"
-local retcode = "logic.retcode"
-local cmd = "proto.cmd"
+local skynet = require "skynet"
+local retcode = require "logic.retcode"
+local cmd = require "proto.cmd"
 
-local dbservice = skynet.queryservice("db")
 local function execute_f(req, resp_f)
+    local dbservice = skynet.queryservice("db")
     local account = assert(req.args.account)
     local passwd = assert(req.args.passwd)
     local ret, playerinfo = skynet.call(
@@ -23,4 +23,7 @@ local function execute_f(req, resp_f)
     resp_f(retcode.SUCCESS, playerinfo)
 end
 
-return cmd.LOGIN, execute_f
+return {
+    cmd = cmd.LOGIN, 
+    handler = execute_f,
+}

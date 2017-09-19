@@ -22,7 +22,7 @@ function CMD.dispatch(source, sess, msg)
 	return
     end
     local req = {
-	addr = source,
+	source = source,
 	session = sess,
 	cmd = cmd,
 	args = args,
@@ -40,7 +40,7 @@ skynet.start( function ()
 		skynet.ret(skynet.pack(func(...)))
 	    end
 	else
-	    log("Unknown connection Command : [%s]", cmd)
+	    log("Unknown login Command : [%s]", cmd)
 	    skynet.response()(false)
 	end
     end)

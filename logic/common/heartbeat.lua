@@ -6,4 +6,7 @@ local function execute_f(req, resp_f)
     resp_f(retcode.SUCCESS, {servertime = servertime})
 end
 
-return cmd.HEARTBEAT, execute_f
+return {
+    cmd = cmd.HEARTBEAT, 
+    handler = execute_f,
+}

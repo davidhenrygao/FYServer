@@ -20,7 +20,7 @@ function CMD.register(account, passwd)
 	    name = "player" .. tostring(os.time()),
 	},
     }
-    player_info[id_counter] = account_info[account_info].player_info
+    player_info[id_counter] = account_info[account].player_info
     id_counter = id_counter + 1
     return retcode.SUCCESS, account_info[account].player_info
 end
@@ -32,7 +32,7 @@ function CMD.query_account_info(account)
     return retcode.SUCCESS, account_info[account]
 end
 
-function CMD.changname(id, name)
+function CMD.changename(id, name)
     if player_info[id] == nil then
         return retcode.PLAYER_ID_NOT_EXIT
     end
@@ -50,7 +50,7 @@ skynet.start( function ()
 		skynet.ret(skynet.pack(func(...)))
 	    end
 	else
-	    log("Unknown connection Command : [%s]", cmd)
+	    log("Unknown db Command : [%s]", cmd)
 	    skynet.response()(false)
 	end
     end)

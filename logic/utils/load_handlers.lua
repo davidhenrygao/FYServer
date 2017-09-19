@@ -9,9 +9,8 @@ local root = skynet.getenv("root") .. logic .. "/"
 local function load_handlers(paths)
     local path
     local file
-    local cmd
-    local handler
-    local handlers = nil
+    local hinfo
+    local handlers = {}
     for _,p in ipairs(paths) do
         path = root .. p
 	local attrs, err = lfs.attributes(path)
@@ -23,8 +22,8 @@ local function load_handlers(paths)
 	    end
 	    if attrs.mode == "file" and path_mgr.suffix(p) == "lua" then
 	        file = path_mgr.trans2luapath(logic .. "/" .. path_mgr.prefix(p))
-		cmd, handler = require(file)
-		handlers[cmd] = handler
+		hinfo = require(file)
+		handlers[hinfo.cmd] = hinfo.handler
 	    end
 	    if attrs.mode == "directory" then
 		for f in lfs.dir(path) do
@@ -40,8 +39,9 @@ local function load_handlers(paths)
 			    and path_mgr.suffix(f) == "lua" then
 			    file = path_mgr.trans2luapath(
 				logic .. "/" .. p .. "/" .. path_mgr.prefix(f))
-			    cmd, handler = require(file)
-			    handlers[cmd] = handler
+			    --log("after trans2luapath file is : %s.", file)
+			    hinfo = require(file)
+			    handlers[hinfo.cmd] = hinfo.handler
 			end
 		    until true
 		end

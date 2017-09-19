@@ -8,6 +8,7 @@ local CMD = {
     ECHO = 2,
 -- 100-199 login server use
     LOGIN = 100,
+    CHANGENAME = 101,
 }
 
 return CMD

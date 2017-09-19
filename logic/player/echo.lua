@@ -10,4 +10,7 @@ local function execute_f(req, resp_f)
     resp_f(retcode.SUCCESS, resp)
 end
 
-return cmd.ECHO, execute_f
+return {
+    cmd = cmd.ECHO, 
+    handler = execute_f,
+}

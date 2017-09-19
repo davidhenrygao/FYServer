@@ -10,7 +10,7 @@ proto.serialize = function (code, resp)
 	code = code, 
 	body = resp,
     }
-    local ok, ret = pcall(cjson.encode(tbl))
+    local ok, ret = pcall(cjson.encode, tbl)
     if not ok then
 	log("cjson encode error: %s", ret)
         return nil, ret
