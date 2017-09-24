@@ -7,15 +7,10 @@ local function execute_f(req, resp_f)
     local account = assert(req.args.account)
     local passwd = assert(req.args.passwd)
     local ret, playerinfo = skynet.call(
-	dbservice, "lua", "register", account, passwd)
+	dbservice, "lua", "login", account, passwd)
     if ret~= retcode.SUCCESS then
-        local _, account_info = skynet.call(
-	    dbservice, "lua", "query_account_info", account)
-	if account_info.passwd ~= passwd then
-	    resp_f(retcode.WRONG_PASSWORD)
-	    return
-	end
-	playerinfo = account_info.player_info
+	resp_f(ret)
+	return
     end
     local agent = skynet.newservice("agent")
     skynet.call(agent, "lua", "start", playerinfo)
