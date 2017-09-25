@@ -9,6 +9,7 @@ local CMD = {
 -- 100-199 login server use
     LOGIN = 100,
     CHANGENAME = 101,
+    GETPLAYERINFO = 102,
 }
 
 return CMD

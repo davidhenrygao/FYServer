@@ -17,5 +17,6 @@ retcode.WRONG_PASSWORD = 1005
 -- 10000-19999 are used for agent
 retcode.PLAYER_ID_NOT_EXIT = 10000
 retcode.PLAYER_NOT_LOGIN = 10001
+retcode.CHANGE_PLAYER_NAME_DB_ERR = 10002
 
 return retcode

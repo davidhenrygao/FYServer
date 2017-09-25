@@ -54,7 +54,7 @@ function CMD.login(account, passwd)
         -- login
 	account_info_str = db:hget(ACCOUNT, account)
 	account_info = cjson.decode(account_info_str)
-	key = PLAYER .. tostring(account_info.id)
+	key = PLAYER .. string.format("%d", account_info.id)
 	player_str = db:get(key)
 	if player_str == nil then
 	    return retcode.ACCOUNT_PLAYER_NOT_EXIST
@@ -81,6 +81,12 @@ function CMD.changename(id, name)
         return retcode.PLAYER_NOT_LOGIN
     end
     player_info[id].name = name
+    local player_str = cjson.encode(player_info[id])
+    local key = PLAYER .. string.format("%d", id)
+    local ret = db:set(key, player_str)
+    if ret == nil then
+        return retcode.CHANGE_PLAYER_NAME_DB_ERR
+    end
     return retcode.SUCCESS
 end
 
