@@ -32,6 +32,10 @@ local function main_loop()
 	session = session + 1
 	skynet.send(data.dest, "lua", "dispatch", skynet.self(), session, msg)
     end
+    skynet.call(data.host, "lua", "close_conn", {
+	conn = skynet.self(),
+    })
+    socket.close(data.fd)
     skynet.exit()
 end
 
@@ -39,7 +43,7 @@ local function init_state_selfcheck()
     local interval = skynet.time() - data.time
     if interval > TIMEOUT.INIT then
 	log("fd[%d] connection init timeout[%d].", data.fd, interval)
-        skynet.call(data.gate, "lua", "close_conn", {
+        skynet.call(data.host, "lua", "close_conn", {
 	    conn = skynet.self(),
 	})
 	socket.close(data.fd)
@@ -51,9 +55,10 @@ local function login_state_selfcheck()
 end
 
 function CMD.start(conf)
-    assert(conf and conf.fd and conf.dest, 
+    assert(conf and conf.fd and conf.host and conf.dest, 
 	"connection start function's arguments error")
     data.fd = conf.fd
+    data.host = conf.host
     data.dest = conf.dest
     data.state = STATE.INIT
     data.time = skynet.time()

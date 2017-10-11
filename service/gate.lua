@@ -14,6 +14,7 @@ local function accept_cb(fd, ip)
     local conn = skynet.newservice("connection")
     skynet.call(conn, "lua", "start", {
 	fd = fd,
+	host = skynet.self(),
 	dest = data.login,
     })
     conns[conn] = fd
