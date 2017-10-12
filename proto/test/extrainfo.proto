@@ -1,6 +1,0 @@
-package test;
-
-message Extrainfo {
-	optional int32 major = 1;
-	optional int32 minor = 2;
-};

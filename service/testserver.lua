@@ -113,7 +113,7 @@ function CMD.dispatch(source, sess, msg)
 end
 
 skynet.init( function ()
-    local import_pbfile = skynet.getenv("root") .. "proto/test/extrainfo.pb"
+    local import_pbfile = skynet.getenv("root") .. "proto/common/extrainfo.pb"
     local pbfile = skynet.getenv("root") .. "proto/test/test.pb"
     pb.register_file(import_pbfile)
     pb.register_file(pbfile)
