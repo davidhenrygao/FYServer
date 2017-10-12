@@ -75,6 +75,15 @@ local function handleRequest(cmd, req)
 	    log("req.gameserver_id(%d).", req.gameserver_id)
 	    resp.resp_body.options = {10,9,8,7,6}
 	end
+	resp.infos = {}
+	log("req.infos len: %d.", #req.infos)
+	for idx,info in ipairs(req.infos) do
+	    log("info[%d] major[%d] minor[%d].", idx, info.major, info.minor)
+	    resp.infos[idx] = {
+		major = info.major,
+		minor = info.minor,
+	    }
+	end
     end
     return resp
 end
@@ -104,7 +113,9 @@ function CMD.dispatch(source, sess, msg)
 end
 
 skynet.init( function ()
+    local import_pbfile = skynet.getenv("root") .. "proto/test/extrainfo.pb"
     local pbfile = skynet.getenv("root") .. "proto/test/test.pb"
+    pb.register_file(import_pbfile)
     pb.register_file(pbfile)
 end)
 
