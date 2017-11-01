@@ -49,7 +49,7 @@ local function msgUnpack(msg)
 	len = len,
 	checksum = checksum,
     }
-    local req, err = pb.decode("test.Req", req_data)
+    local req, err = pb.decode("proto.Req", req_data)
     return msghead, req, err
 end
 
@@ -84,12 +84,16 @@ local function handleRequest(cmd, req)
 		minor = info.minor,
 	    }
 	end
+	log("req.card.id: %d.", req.card.id)
+	log("req.card.level: %d.", req.card.level)
+	log("req.card.amount: %d.", req.card.amount)
+	log("req.card.state: %d.", req.card.state)
     end
     return resp
 end
 
 local function msgPack(msghead, resp)
-    local resp_data = pb.encode("test.Resp", resp) 
+    local resp_data = pb.encode("proto.Resp", resp) 
     msghead.len = string.len(resp_data)
     local head = string.pack(">i4 i4 i2 i4", msghead.session, msghead.cmd, msghead.len, 
 	msghead.checksum)
@@ -114,8 +118,10 @@ end
 
 skynet.init( function ()
     local import_pbfile = skynet.getenv("root") .. "proto/common/extrainfo.pb"
+    local pbcardfile = skynet.getenv("root") .. "proto/test/card.pb"
     local pbfile = skynet.getenv("root") .. "proto/test/test.pb"
     pb.register_file(import_pbfile)
+    pb.register_file(pbcardfile)
     pb.register_file(pbfile)
 end)
 

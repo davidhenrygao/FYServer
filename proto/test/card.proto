@@ -1,0 +1,10 @@
+package proto;
+
+option go_package = "github.com/davidhenrygao/GolangTest/proto/test";
+
+message card{
+	required uint32 id = 1;
+	required uint32 level = 2;
+	optional uint32 amount = 3;
+	optional uint32 state = 4;
+};

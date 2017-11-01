@@ -1,4 +1,4 @@
-package common;
+package proto;
 
 option go_package = "github.com/davidhenrygao/GolangTest/proto/common";
 

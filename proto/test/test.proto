@@ -1,6 +1,7 @@
 import "extrainfo.proto";
+import "card.proto";
 
-package test;
+package proto;
 
 option go_package = "github.com/davidhenrygao/GolangTest/proto/test";
 
@@ -20,7 +21,8 @@ message Req{
 	optional string token = 3;
 	optional int32 gameserver_id = 4;
 	optional string msg = 5;
-	repeated common.Extrainfo infos = 6;
+	repeated Extrainfo infos = 6;
+	optional card card = 7;
 };
 
 message RespBody{
@@ -32,5 +34,5 @@ message RespBody{
 message Resp{
 	required int32 rc = 1;
 	optional RespBody resp_body = 2;
-	repeated common.Extrainfo infos = 3;
+	repeated Extrainfo infos = 3;
 };
